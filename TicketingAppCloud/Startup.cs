@@ -31,7 +31,7 @@ namespace TicketingAppCloud
             services.AddControllersWithViews();
             services.AddCors(options =>
             {
-                options.AddPolicy(name: MyAllowSpecificOrigins,
+                options.AddPolicy(name: AllowAnyOrigin,
                                   builder =>
                                   {
                                       builder.AllowAnyOrigin();

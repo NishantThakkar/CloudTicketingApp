@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TicketingAppCloud.DBModels;
+using TicketingAppCloud.Service;
 
 namespace TicketingAppCloud
 {
@@ -26,9 +27,9 @@ namespace TicketingAppCloud
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<TicketingDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
+            services.AddDbContext<TicketingDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));   
             services.AddControllersWithViews();
+            services.AddTokenAuthentication(Configuration);
             services.AddCors(options =>
             {
                 options.AddPolicy(name: AllowAnyOrigin,
@@ -56,7 +57,7 @@ namespace TicketingAppCloud
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseCors(AllowAnyOrigin);
             app.UseEndpoints(endpoints =>

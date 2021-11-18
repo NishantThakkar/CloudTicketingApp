@@ -1,0 +1,21 @@
+## Ignore Visual Studio temporary files, build results, and
+
+[Dd]ebug/
+[Dd]ebugPublic/
+
+[Rr]elease/
+[Rr]eleases/
+
+[Bb]in/
+
+# Installshield output folder
+[Ee]xpress/
+
+# Visual Studio cache/options directory
+.vs/
+
+# Build results
+x64/
+x86/
+pkg/
+[Oo]bj/

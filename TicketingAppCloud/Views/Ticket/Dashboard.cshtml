@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Ticket Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to Ticket Dashboard</h1>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Summary</th>
+                <th scope="col">Details</th>
+                <th scope="col">Priority</th>
+                <th scope="col">Status</th>
+                <th scope="col">Assigned To</th>
+            </tr>
+        </thead>
+        <tbody id="tbTickets"></tbody>
+    </table>
+</div>
+@section Scripts{
+    <script>
+        $.get("/Ticket", function (data, status) {
+            const table = document.getElementById("tbTickets");
+            data.forEach(item => {
+                let row = table.insertRow();
+                row.insertCell(0).innerHTML = item.id;
+                row.insertCell(1).innerHTML = item.summary;
+                row.insertCell(2).innerHTML = item.details;
+                row.insertCell(3).innerHTML = item.priority;
+                row.insertCell(4).innerHTML = item.status;
+                row.insertCell(5).innerHTML = item.assignedTo;
+            });
+        });
+    </script>
+}

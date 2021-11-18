@@ -20,7 +20,7 @@
 </div>
 @section Scripts{
     <script>
-        $.get("/Ticket", function (data, status) {
+        $.get("/ticketingapis/Ticket", function (data, status) {
             const table = document.getElementById("tbTickets");
             data.forEach(item => {
                 let row = table.insertRow();

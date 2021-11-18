@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using TicketingAppCloud.DBModels;
 using TicketingAppCloud.Models;
@@ -37,13 +38,22 @@ namespace TicketingAppCloud.Controllers
         }
         [Authorize]
         [HttpGet]
-        [Route("pwa/{userName}")]
+        [Route("mytickets")]
         public IActionResult Get(string userName)
         {
             try
             {
-                var tickets = _ticketingDbContext.Tickets.Where(x => x.AssignedTo == userName).ToList();
-                return Ok(tickets);
+                var loggedinUser = this.User.FindFirst(ClaimTypes.Name.ToString())?.Value;
+                if (!string.IsNullOrEmpty(loggedinUser))
+                {
+                    var tickets = _ticketingDbContext.Tickets.Where(x => x.AssignedTo == loggedinUser).ToList();
+                    return Ok(tickets);
+                }
+                else
+                {
+                    return Unauthorized();
+                }
+                
             }
             catch (Exception ex)
             {

@@ -29,15 +29,16 @@ namespace TicketingAppCloud
         {
             services.AddDbContext<TicketingDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));   
             services.AddControllersWithViews();
-            services.AddTokenAuthentication(Configuration);
+            
             services.AddCors(options =>
             {
                 options.AddPolicy(name: AllowAnyOrigin,
                                   builder =>
                                   {
-                                      builder.AllowAnyOrigin();
+                                      builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
                                   });
             });
+            services.AddTokenAuthentication(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,15 +52,15 @@ namespace TicketingAppCloud
             {
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                //app.UseHsts();
             }
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseRouting();
+            app.UseRouting();            
+            app.UseCors(AllowAnyOrigin);
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseCors(AllowAnyOrigin);
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

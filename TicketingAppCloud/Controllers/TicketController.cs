@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ using TicketingAppCloud.Models;
 
 namespace TicketingAppCloud.Controllers
 {
+    
     [Route("[controller]")]
     public class TicketController : Controller
     {
@@ -19,7 +21,7 @@ namespace TicketingAppCloud.Controllers
         {
             _ticketingDbContext = ticketingDbContext;
         }
-
+        
         [HttpGet]
         public IActionResult Get()
         {
@@ -32,14 +34,22 @@ namespace TicketingAppCloud.Controllers
             {
                 return StatusCode(500, new ApiResponse(ex.ToString()));
             }
-            //return new List<object>
-            //{
-            //    new {Id = 1, Summary = "Printer SX001876 is not working", Details = "There is ink leakage from the printer", Priority = "High", Status = "Open", AssignedTo = "John Doe"},
-            //    new {Id = 2, Summary = "Printer PY009872 is not working properly", Details = "There is print quality is Bad", Priority = "Medium", Status = "In Progress", AssignedTo = "Mike Pant"},
-            //    new {Id = 3, Summary = "Uncertain about printer 9CAAQ01 security", Details = "", Priority = "Low", Status = "Resolved", AssignedTo = "Don Bravo"},
-            //};
         }
-
+        [Authorize]
+        [HttpGet]
+        [Route("pwa/{userName}")]
+        public IActionResult Get(string userName)
+        {
+            try
+            {
+                var tickets = _ticketingDbContext.Tickets.Where(x => x.AssignedTo == userName).ToList();
+                return Ok(tickets);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ApiResponse(ex.ToString()));
+            }
+        }
         [HttpGet("Dashboard")]
         public IActionResult Dashboard()
         {

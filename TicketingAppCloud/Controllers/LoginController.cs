@@ -14,9 +14,8 @@ using TicketingAppCloud.Service;
 
 namespace TicketingAppCloud.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class LoginController : ControllerBase
+    [Route("[controller]")]    
+    public class LoginController : Controller
     {
         
         private readonly TicketingDbContext _ticketingDbContext;

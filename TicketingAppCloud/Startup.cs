@@ -21,14 +21,22 @@ namespace TicketingAppCloud
         }
 
         public IConfiguration Configuration { get; }
+        public string AllowAnyOrigin = "AllowAnyOrigin";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<TicketingDbContext>(options =>
-        options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<TicketingDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddControllersWithViews();
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  builder =>
+                                  {
+                                      builder.AllowAnyOrigin();
+                                  });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,7 +58,7 @@ namespace TicketingAppCloud
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseCors(AllowAnyOrigin);
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

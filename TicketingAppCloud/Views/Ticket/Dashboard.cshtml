@@ -4,15 +4,17 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome to Ticket Dashboard</h1>
-    <table class="table table-hover">
+    <table class="table table-hover small">
         <thead>
             <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Summary</th>
-                <th scope="col">Details</th>
                 <th scope="col">Priority</th>
                 <th scope="col">Status</th>
                 <th scope="col">Assigned To</th>
+                <th scope="col">Created</th>
+                <th scope="col">Updated</th>
+                <th scope="col">Notes</th>
             </tr>
         </thead>
         <tbody id="tbTickets"></tbody>
@@ -26,10 +28,12 @@
                 let row = table.insertRow();
                 row.insertCell(0).innerHTML = item.id;
                 row.insertCell(1).innerHTML = item.summary;
-                row.insertCell(2).innerHTML = item.details;
-                row.insertCell(3).innerHTML = item.priority;
-                row.insertCell(4).innerHTML = item.status;
-                row.insertCell(5).innerHTML = item.assignedTo;
+                row.insertCell(2).innerHTML = item.priority;
+                row.insertCell(3).innerHTML = item.status;
+                row.insertCell(4).innerHTML = item.assignedTo;
+                row.insertCell(5).innerHTML = new Date(item.createdDate).toLocaleString();
+                row.insertCell(6).innerHTML = item.updatedDate == null ? "" : new Date(item.updatedDate).toLocaleString();
+                row.insertCell(7).innerHTML = item.notes
             });
         });
     </script>

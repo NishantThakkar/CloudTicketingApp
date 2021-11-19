@@ -28,7 +28,7 @@ namespace TicketingAppCloud.Controllers
         {
             try
             {
-                var tickets = _ticketingDbContext.Tickets.ToList();
+                var tickets = _ticketingDbContext.Tickets.ToList().OrderByDescending(x => x.UpdatedDate != null ? x.UpdatedDate.Value : x.CreatedDate).ToList();
                 return Ok(tickets);
             }
             catch (Exception ex)
@@ -36,6 +36,7 @@ namespace TicketingAppCloud.Controllers
                 return StatusCode(500, new ApiResponse(ex.ToString()));
             }
         }
+        
         [Authorize]
         [HttpGet]
         [Route("mytickets")]
@@ -46,7 +47,7 @@ namespace TicketingAppCloud.Controllers
                 var loggedinUser = this.User.FindFirst(ClaimTypes.Name.ToString())?.Value;
                 if (!string.IsNullOrEmpty(loggedinUser))
                 {
-                    var tickets = _ticketingDbContext.Tickets.Where(x => x.AssignedTo == loggedinUser).ToList();
+                    var tickets = _ticketingDbContext.Tickets.Where(x => x.AssignedTo == loggedinUser).ToList().OrderByDescending(x => x.UpdatedDate != null ? x.UpdatedDate.Value : x.CreatedDate).ToList();
                     return Ok(tickets);
                 }
                 else
@@ -60,6 +61,7 @@ namespace TicketingAppCloud.Controllers
                 return StatusCode(500, new ApiResponse(ex.ToString()));
             }
         }
+        
         [HttpGet("Dashboard")]
         public IActionResult Dashboard()
         {

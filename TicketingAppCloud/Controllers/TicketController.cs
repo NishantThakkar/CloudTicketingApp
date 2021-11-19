@@ -102,7 +102,7 @@ namespace TicketingAppCloud.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPut("Update")]
         public IActionResult Put([FromBody]Ticket ticket)
         {
             try
